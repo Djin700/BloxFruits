@@ -4,50 +4,38 @@ local blockname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1
 local ServerHop = true
 
--- if _G.FarmSpeed ~= nil then
--- 	FarmSpeed = _G.FarmSpeed
--- end
+--//Hop//--
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+local _place,_id = game.PlaceId, game.JobId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=10"
 
--- if _G.ServerHop ~= nil then
--- 	ServerHop = _G.ServerHop
--- end
-
-local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
-local player = Players.LocalPlayer
-local placeId = game.PlaceId
-
- local function ServerHop()
-	while task.wait(0.1) do
-    local placeId = game.PlaceId
-    local success, servers = pcall(TeleportService.GetGameServers, TeleportService, placeId)
-
-    if success and servers then
-        local randomServer = servers[math.random(1, #servers)]
-        if randomServer and randomServer.Id then
-            TeleportService:TeleportToPlaceInstance(placeId, randomServer.Id, plr)
-        else
-            warn("Не удалось найти подходящий сервер для телепортации.")
-        end
-    else
-        warn("Ошибка получения списка серверов: " .. tostring(servers))
-    end
-	end
+local function ServerList(cursor)
+	local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+	return Http:JSONDecode(Raw)
 end
 
+local function ServerHop()
+	while task.wait(3) do
+		local Servers = ServerList()
+		local Server = Servers.data[math.random(1,#Servers.data)]
+		TPS:TeleportToPlaceInstance(_place, Server.id, plr)
+	end
+end
+--//❤//--
 
 local function SetTeam()
 	local args = {
-	    [1] = "SetTeam",
-	    [2] = "Marines"
+		[1] = "SetTeam",
+		[2] = "Marines"
 	}
-	
+
 	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end
 
 local function Store()
 	print("Попытка сложить фрукты⚠")
-	task.wait(0.5)
 	for i,v in plr.Backpack:GetChildren() do
 		if v:IsA("Tool") then
 			local args = {
@@ -74,7 +62,7 @@ local function Store()
 			args[1] = "StoreFruit"
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
-			
+
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
@@ -106,8 +94,8 @@ local function Finder()
 						end
 					end
 					if currentpart then
-					plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
-					task.wait(0.15)
+						plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
+						task.wait(0.15)
 					end
 				end
 			end
@@ -115,6 +103,7 @@ local function Finder()
 		end
 	end
 	RandomFruit()
+	task.wait(0.5)
 	Store()
 	task.wait(5)
 	print("Hop!")
