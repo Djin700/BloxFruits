@@ -3,6 +3,7 @@ local fruitsname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1 --Seconds
 
 local function Store()
+	print("Попытка сложить фрукты!")
 	for i,v in plr.Backpack:GetChildren() do
 		if v:IsA("Tool") then
 			local args = {
@@ -33,7 +34,7 @@ local function Store()
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
-	print("Все фрукты удачно сохранены!")
+	print("Все фрукты удачно сложены!")
 end
 
 local function Finder()
@@ -63,7 +64,6 @@ local function Finder()
 			task.wait(FarmSpeed)
 		end
 	end
-	print("Попытка положить фрукт!")
 	Store()
 end
 
