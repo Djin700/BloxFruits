@@ -2,6 +2,40 @@ local plr = game:GetService("Players").LocalPlayer
 local fruitsname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1 --Seconds
 
+local function Store()
+	for i,v in plr.Backpack:GetChildren() do
+		if v:IsA("Tool") then
+			local args = {
+				[1] = "",
+				[2] = "",
+				[3] = "",
+			}
+			local name = string.split(v.Name," ")
+			args[1] = "StoreFruit"
+			args[2]= tostring(name[1].."-"..name[1])
+			args[3] = v
+
+			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+		end
+	end
+	for i,v in plr.Character:GetChildren() do
+		if v:IsA("Tool") then
+			local args = {
+				[1] = "",
+				[2] = "",
+				[3] = "",
+			}
+			local name = string.split(v.Name," ")
+			args[1] = "StoreFruit"
+			args[2]= tostring(name[1].."-"..name[1])
+			args[3] = v
+
+			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+		end
+	end
+	print("Все фрукты удачно сохранены!")
+end
+
 local function Finder()
 	for _,fruit in workspace:GetChildren() do
 		if (fruit:IsA("Tool") or fruit:IsA("Model") and fruit.Name == "Fruit") and fruit.Name ~= fruitsname[1] and  fruit.Name ~= fruitsname[2] and fruit.Name ~= fruitsname[3] then
@@ -29,7 +63,8 @@ local function Finder()
 			task.wait(FarmSpeed)
 		end
 	end
-	print("Stopped!")
+	print("Попытка положить фрукт!")
+	Store()
 end
 
 Finder()
