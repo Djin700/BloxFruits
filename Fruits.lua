@@ -1,6 +1,16 @@
 local plr = game:GetService("Players").LocalPlayer
-local fruitsname = {"Banana","Pineapple","Apple"}
-local FarmSpeed = 1 --Seconds
+local blockname = {"Banana","Pineapple","Apple"}
+
+local FarmSpeed = 1
+local ServerHop = true
+
+if _G.FarmSpeed ~= nil then
+	FarmSpeed = _G.FarmSpeed
+end
+
+if _G.ServerHop ~= nil then
+	ServerHop = _G.ServerHop
+end
 
 local Http = game:GetService("HttpService")
 local TPS = game:GetService("TeleportService")
@@ -23,6 +33,7 @@ local function ServerHop()
 end
 
 local function Store()
+	print("Попытка сложить фрукты⚠")
 	task.wait(0.5)
 	for i,v in plr.Backpack:GetChildren() do
 		if v:IsA("Tool") then
@@ -54,6 +65,7 @@ local function Store()
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
+	print("Фрукты успешно сложены✔")
 end
 
 local function RandomFruit()
@@ -66,7 +78,7 @@ end
 
 local function Finder()
 	for _,fruit in workspace:GetChildren() do
-		if (fruit:IsA("Tool") or fruit:IsA("Model") and fruit.Name == "Fruit") and fruit.Name ~= fruitsname[1] and  fruit.Name ~= fruitsname[2] and fruit.Name ~= fruitsname[3] then
+		if (fruit:IsA("Tool") or fruit:IsA("Model") and fruit.Name == "Fruit") and fruit.Name ~= blockname[1] and  fruit.Name ~= blockname[2] and fruit.Name ~= blockname[3] then
 			local Handle = fruit:FindFirstChild("Handle")
 			for i=1,3 do
 				if Handle and plr.Character then
@@ -92,8 +104,10 @@ local function Finder()
 	RandomFruit()
 	Store()
 	task.delay(10,function()
-		for i=1,50 do
-			ServerHop()
+		if ServerHop == true then
+			for i=1,50 do
+				ServerHop()
+			end
 		end
 	end)
 end
