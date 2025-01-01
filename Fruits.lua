@@ -3,7 +3,7 @@ local fruitsname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1 --Seconds
 
 local function Store()
-	print("Попытка сложить фрукты!")
+	task.wait(0.5)
 	for i,v in plr.Backpack:GetChildren() do
 		if v:IsA("Tool") then
 			local args = {
@@ -16,6 +16,7 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
+			print("FruitData:",args)
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
@@ -31,10 +32,18 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
+			print("FruitData:",args)
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
-	print("Все фрукты удачно сложены!")
+end
+
+local function RandomFruit()
+	local args = {
+		[1] = "Cousin",
+		[2] = "Buy"
+	}
+	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end
 
 local function Finder()
@@ -64,7 +73,9 @@ local function Finder()
 			task.wait(FarmSpeed)
 		end
 	end
+	RandomFruit()
 	Store()
+	print("Stored!")
 end
 
 Finder()
