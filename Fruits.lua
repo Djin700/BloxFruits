@@ -35,7 +35,6 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
-			print("FruitData:",args)
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
@@ -50,8 +49,7 @@ local function Store()
 			args[1] = "StoreFruit"
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
-
-			print("FruitData:",args)
+			
 			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
@@ -84,8 +82,6 @@ local function Finder()
 					if currentpart then
 					plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
 					task.wait(0.15)
-					else
-						print("Dalbaeb Tupoi!")
 					end
 				end
 			end
@@ -94,7 +90,7 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	task.delay(5,function()
+	task.delay(10,function()
 		ServerHop()
 	end)
 end
