@@ -102,9 +102,7 @@ local function Finder()
 	Store()
 	task.delay(5,function()
 		for i=1,50 do
-			if ServerHop then
-				ServerHop()
-			end
+			ServerHop()
 		end
 	end)
 end
