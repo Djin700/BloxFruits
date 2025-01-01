@@ -86,7 +86,7 @@ local function Finder()
 	for _,fruit in workspace:GetChildren() do
 		if (fruit:IsA("Tool") or fruit:IsA("Model") and fruit.Name == "Fruit") and fruit.Name ~= blockname[1] and  fruit.Name ~= blockname[2] and fruit.Name ~= blockname[3] then
 			local Handle = fruit:FindFirstChild("Handle")
-			for i=1,3 do
+			for i=1,10 do
 				if Handle and plr.Character then
 					plr.Character.HumanoidRootPart.CFrame = Handle.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
 					task.wait(0.15)
