@@ -1,6 +1,8 @@
 local plr = game:GetService("Players").LocalPlayer
 local blockname = {"Banana","Pineapple","Apple"}
 
+plr.CharacterAdded:Wait()
+
 local FarmSpeed = 1
 local ServerHop = true
 
