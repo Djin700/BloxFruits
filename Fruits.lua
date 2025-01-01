@@ -17,29 +17,24 @@ local TeleportService = game:GetService("TeleportService")
 local player = Players.LocalPlayer
 local placeId = game.PlaceId
 
-local function getRandomServer(placeId)
-    -- Получаем список серверов
-    local response = TeleportService:GetPlayerPlaceInstanceAsync(Players.LocalPlayer.UserId, placeId)
-    
-    if response and #response > 0 then
-        -- Выбираем случайный сервер из списка
-        local randomIndex = math.random(1, #response)
-        return response[randomIndex].PlaceId, response[randomIndex].JobId
+ local function ServerHop()
+	while task.wait(0.1) do
+    local placeId = game.PlaceId
+    local success, servers = pcall(TeleportService.GetGameServers, TeleportService, placeId)
+
+    if success and servers then
+        local randomServer = servers[math.random(1, #servers)]
+        if randomServer and randomServer.Id then
+            TeleportService:TeleportToPlaceInstance(placeId, randomServer.Id, plr)
+        else
+            warn("Не удалось найти подходящий сервер для телепортации.")
+        end
     else
-        return nil
+        warn("Ошибка получения списка серверов: " .. tostring(servers))
     end
+	end
 end
 
-local function ServerHop()
-    while task.wait(0.1) do
-	    local randomPlaceId, randomJobId = getRandomServer(placeId)
-	    if randomPlaceId and randomJobId then
-	        TeleportService:Teleport(randomPlaceId, player)
-	    else
-	        warn("Не удалось получить случайный сервер.")
-	    end
-    end
-end
 
 local function SetTeam()
 	local args = {
