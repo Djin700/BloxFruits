@@ -100,12 +100,8 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	task.delay(5,function()
-		for i=1,50 do
-			ServerHop()
-			print("Hop!")
-		end
-	end)
+	ServerHop()
+	print("Hop!")
 end
 
 Finder()
