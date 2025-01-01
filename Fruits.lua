@@ -16,11 +16,17 @@ local function ServerList(cursor)
 	return Http:JSONDecode(Raw)
 end
 
-local function ServerHop()
-	while task.wait(3) do
+local function pcallhop()
+	local success, message = pcall(function()
 		local Servers = ServerList()
 		local Server = Servers.data[math.random(1,#Servers.data)]
 		TPS:TeleportToPlaceInstance(_place, Server.id, plr)
+	end)
+end
+
+local function ServerHop()
+	while task.wait(3) do
+		pcallhop()
 	end
 end
 --//❤//--
