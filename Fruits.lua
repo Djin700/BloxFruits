@@ -109,6 +109,7 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
+	task.wait(5)
 	print("Hop!")
 	for i=1,9999 do
 		ServerHop()
