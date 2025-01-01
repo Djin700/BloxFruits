@@ -2,6 +2,25 @@ local plr = game:GetService("Players").LocalPlayer
 local fruitsname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1 --Seconds
 
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+local _place,_id = game.PlaceId, game.JobId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=10"
+
+task.wait(3)
+
+local function ServerList(cursor)
+	local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+	return Http:JSONDecode(Raw)
+end
+
+local function ServerHop()
+	local Servers = ServerList()
+	local Server = Servers.data[math.random(1,#Servers.data)]
+	TPS:TeleportToPlaceInstance(_place, Server.id, plr)
+end
+
 local function Store()
 	task.wait(0.5)
 	for i,v in plr.Backpack:GetChildren() do
@@ -75,7 +94,9 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	print("Stored!")
+	task.delay(5,function()
+		ServerHop()
+	end)
 end
 
 Finder()
