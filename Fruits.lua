@@ -18,9 +18,6 @@ local Api = "https://games.roblox.com/v1/games/"
 local _place,_id = game.PlaceId, game.JobId
 local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=10"
 
-task.wait(3)
-print("Version:700")
-
 local function ServerList(cursor)
 	local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
 	return Http:JSONDecode(Raw)
@@ -103,13 +100,13 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	task.delay(10,function()
-		if ServerHop == true then
+	if ServerHop == true then
+		task.delay(10,function()
 			for i=1,50 do
 				ServerHop()
 			end
-		end
-	end)
+		end)
+	end
 end
 
 Finder()
