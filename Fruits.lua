@@ -100,8 +100,10 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	ServerHop()
 	print("Hop!")
+	for i=1,9999 do
+		ServerHop()
+	end
 end
 
 Finder()
