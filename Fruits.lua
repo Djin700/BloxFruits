@@ -91,7 +91,9 @@ local function Finder()
 	RandomFruit()
 	Store()
 	task.delay(10,function()
-		ServerHop()
+		for i=1,50 do
+			ServerHop()
+		end
 	end)
 end
 
