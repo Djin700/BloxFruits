@@ -103,6 +103,7 @@ local function Finder()
 	task.delay(5,function()
 		for i=1,50 do
 			ServerHop()
+			print("Hop!")
 		end
 	end)
 end
