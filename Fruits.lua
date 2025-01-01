@@ -4,13 +4,13 @@ local blockname = {"Banana","Pineapple","Apple"}
 local FarmSpeed = 1
 local ServerHop = true
 
-if _G.FarmSpeed ~= nil then
-	FarmSpeed = _G.FarmSpeed
-end
+-- if _G.FarmSpeed ~= nil then
+-- 	FarmSpeed = _G.FarmSpeed
+-- end
 
-if _G.ServerHop ~= nil then
-	ServerHop = _G.ServerHop
-end
+-- if _G.ServerHop ~= nil then
+-- 	ServerHop = _G.ServerHop
+-- end
 
 local Http = game:GetService("HttpService")
 local TPS = game:GetService("TeleportService")
@@ -100,13 +100,13 @@ local function Finder()
 	end
 	RandomFruit()
 	Store()
-	if ServerHop == true then
-		task.delay(10,function()
-			for i=1,50 do
+	task.delay(5,function()
+		for i=1,50 do
+			if ServerHop then
 				ServerHop()
 			end
-		end)
-	end
+		end
+	end)
 end
 
 Finder()
