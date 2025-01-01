@@ -29,6 +29,15 @@ local function ServerHop()
 	TPS:TeleportToPlaceInstance(_place, Server.id, plr)
 end
 
+local function SetTeam()
+	local args = {
+	    [1] = "SetTeam",
+	    [2] = "Marines"
+	}
+	
+	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end
+
 local function Store()
 	print("Попытка сложить фрукты⚠")
 	task.wait(0.5)
@@ -106,4 +115,6 @@ local function Finder()
 	end
 end
 
+SetTeam()
+task.wait(5)
 Finder()
