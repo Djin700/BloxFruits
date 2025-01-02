@@ -95,7 +95,7 @@ end
 
 local function Finder()
 	for _,fruit in workspace:GetDescendants() do
-		if fruit:IsA("Model") and fruit.Name == "Fruit" and not fruit.Parent:FindFirstChild("Humanoid") or fruit:IsA("Tool") and not table.find(blocklist,fruit.Name) and not fruit.Parent:FindFirstChild("Humanoid") then
+		if fruit:IsA("Model") and fruit.Name == "Fruit" and not fruit.Parent:FindFirstChild("Humanoid") and not fruit.Parent.Parent:FindFirstChild("Humanoid") or fruit:IsA("Tool") and not table.find(blocklist,fruit.Name) and not fruit.Parent:FindFirstChild("Humanoid") then
 			local currentpart = FindHandle(fruit)
 
 			print(currentpart)
