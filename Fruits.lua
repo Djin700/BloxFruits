@@ -3,18 +3,26 @@ local remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):Wait
 
 local blocklist = {'Banana','Pineapple','Apple'}
 
-_G.FruitFarmSetting = {
+_G.FruitFarmSettings = {
 	["ServerHop"] = false,
 	["FarmSpeed"] = 0.1,
 	["RandomFruit"] = false,
 	["Team"] = "Marines",
 }
 
-local Settings = _G.FruitFarmSetting
-local FarmSpeed = Settings.FarmSpeed
-local ServerHop = Settings.ServerHop
-local RandomFruit = Settings.RandomFruit
-local Team = Settings.Team
+local DefSettings = _G.FruitFarmSettings
+local FarmSpeed = DefSettings.FarmSpeed
+local ServerHop = DefSettings.ServerHop
+local RandomFruit = DefSettings.RandomFruit
+local Team = DefSettings.Team
+
+local NewSettings = _G.NewFruitFarmSettings
+if NewSettings ~= nil then
+	local FarmSpeed = NewSettings.FarmSpeed
+	local ServerHop = NewSettings.ServerHop
+	local RandomFruit = NewSettings.RandomFruit
+	local Team = NewSettings.Team
+end
 
 print("Скрипт загружен!")
 task.wait(1)
