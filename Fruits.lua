@@ -87,7 +87,7 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
-			remote.Remotes.CommF_:InvokeServer(unpack(args))
+			remote:InvokeServer(unpack(args))
 		end
 	end
 	print("Фрукты успешно сложены✔")
