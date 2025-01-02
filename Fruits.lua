@@ -9,10 +9,10 @@ local RandomFruit = true
 local Team = 2
 
 if _G.FarmSpeed ~= nil then
-	 FarmSpeed = _G.FarmSpeed
-	 ServerHop = _G.ServerHop
-	 RandomFruit = _G.RandomFruit
-	 Team = _G.Team
+ FarmSpeed = _G.FarmSpeed
+ ServerHop = _G.ServerHop
+ RandomFruit = _G.RandomFruit
+ Team = _G.Team
 end
 
 --//ServerHop//--
@@ -133,13 +133,13 @@ local function Finder()
 			task.wait(FarmSpeed)
 		end
 	end
-	if RandomFruit then
+	if RandomFruit == true then
 		RandomFruit()
 		task.wait(0.5)
 	end
 	Store()
 	task.wait(5)
-	if ServerHop then
+	if ServerHop == true then
 		ServerHop()
 	end
 end
