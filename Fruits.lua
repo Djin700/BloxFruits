@@ -145,7 +145,5 @@ local function Finder()
 end
 
 warn("Script FruitsFarm Executed!")
-if plr.TeamColor ~= "Persimmon" and plr.TeamColor ~= "Pastel light blue" then
-	SetTeam()
-end
+SetTeam()
 plr.CharacterAdded:Connect(Finder)
