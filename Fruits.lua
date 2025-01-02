@@ -3,9 +3,10 @@ local remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):Wait
 
 local blocklist = {'Banana','Pineapple','Apple'}
 
+
 local DefSettings = _G.FruitFarmSettings
 local FarmSpeed = DefSettings.FarmSpeed
-local ServerHop = DefSettings.ServerHop
+local ServerHoping = DefSettings.ServerHop
 local RandomFruit = DefSettings.RandomFruit
 local Team = DefSettings.Team
 
@@ -27,6 +28,7 @@ local function ServerHop()
 	end
 
 	while wait(1) do
+		print("Поиск сервера!")
 		local Servers = ListServers()
 		local Server = Servers.data[math.random(1,#Servers.data)]
 		TPS:TeleportToPlaceInstance(_place, Server.id, Player)
@@ -114,7 +116,7 @@ local function Finder()
 		task.wait(0.5)
 		Store()
 		task.wait(1)
-		if ServerHop == true then ServerHop() end
+		if ServerHoping == true then ServerHop() end
 	end)
 end
 
