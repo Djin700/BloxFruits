@@ -1,61 +1,53 @@
 local plr = game:GetService("Players").LocalPlayer
-local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
+local remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
 
-local blockname = {"Banana","Pineapple","Apple"}
-local FarmSpeed = 1
-local ServerHop = true
-local RandomFruit = true
-local Team = 2
+local blocklist = {'Banana','Pineapple','Apple'}
 
---//ServerHop//--
+_G.FruitFarmSetting = {
+	["ServerHop"] = false,
+	["FarmSpeed"] = 0.1,
+	["RandomFruit"] = false,
+	["Team"] = "Marines",
+}
+
+local Settings = _G.FruitFarmSetting
+local FarmSpeed = Settings.FarmSpeed
+local ServerHop = Settings.ServerHop
+local RandomFruit = Settings.RandomFruit
+local Team = Settings.Team
+
+print("Скрипт загружен!")
+task.wait(1)
+
 local function ServerHop()
-	local success, warning = pcall(function()
-		local Player = game.Players.LocalPlayer    
-		local Http = game:GetService("HttpService")
-		local TPS = game:GetService("TeleportService")
-		local Api = "https://games.roblox.com/v1/games/"
+	local Player = game.Players.LocalPlayer    
+	local Http = game:GetService("HttpService")
+	local TPS = game:GetService("TeleportService")
+	local Api = "https://games.roblox.com/v1/games/"
 
-		local _place,_id = game.PlaceId, game.JobId
-		-- Asc for lowest player count, Desc for highest player count
-		local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=50"
+	local _place,_id = game.PlaceId, game.JobId
+	local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=50"
 
-		local function ListServers(cursor)
-			local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
-			return Http:JSONDecode(Raw)
-		end
+	local function ListServers(cursor)
+		local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+		return Http:JSONDecode(Raw)
+	end
 
-		-- choose a random server and join every 2 minutes
-		while wait(1) do
-			print("Hoping!")
-			--freeze player before teleporting to prevent synapse crash?
-			Player.Character.HumanoidRootPart.Anchored = true
-			local Servers = ListServers()
-			local Server = Servers.data[math.random(1,#Servers.data)]
-			TPS:TeleportToPlaceInstance(_place, Server.id, Player)
-		end
-	end)
-	if success then
-		print("Yro!!!")
+	while wait(1) do
+		local Servers = ListServers()
+		local Server = Servers.data[math.random(1,#Servers.data)]
+		TPS:TeleportToPlaceInstance(_place, Server.id, Player)
 	end
 end
---//❤//--
 
 local function SetTeam()
-	local comand = nil
+	print("Команда сменена!")
+	remote:InvokeServer("SetTeam",tostring(Team))
+end
 
-	if Team == 2 then
-		comand = "Marines"
-	else
-		comand = "Pirates"
-	end
-
-	local args = {
-		[1] = "SetTeam",
-		[2] = tostring(comand),
-	}
-
-	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+local function RandomFruit()
+	print("Рандомный фрукт куплен!")
+	remote:InvokeServer("Cousin","Buy")
 end
 
 local function Store()
@@ -72,7 +64,7 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
-			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+			remote:InvokeServer(unpack(args))
 		end
 	end
 	for i,v in plr.Character:GetChildren() do
@@ -87,52 +79,52 @@ local function Store()
 			args[2]= tostring(name[1].."-"..name[1])
 			args[3] = v
 
-			game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+			remote.Remotes.CommF_:InvokeServer(unpack(args))
 		end
 	end
 	print("Фрукты успешно сложены✔")
 end
 
-local function RandomFruit()
-	local args = {
-		[1] = "Cousin",
-		[2] = "Buy"
-	}
-	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+local function FindHandle(Model)
+	local current = nil
+
+	for i,part in Model:GetDescendants() do
+		if part:IsA("BasePart") or part:IsA("UnionOperation") or part:IsA("MeshPart") then
+			current = part
+			break
+		end
+	end
+
+	return current
 end
 
 local function Finder()
 	for _,fruit in workspace:GetDescendants() do
-		if (fruit:IsA("Tool") or fruit:IsA("Model") and fruit.Name == "Fruit") and fruit.Name ~= blockname[1] and  fruit.Name ~= blockname[2] and fruit.Name ~= blockname[3] then
-			local Handle = fruit:FindFirstChild("Handle")
-			for i=1,10 do
-				if Handle and plr.Character then
-					plr.Character.HumanoidRootPart.CFrame = Handle.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
+		if fruit:IsA("Model") and fruit.Name == "Fruit" and not fruit.Parent:FindFirstChild("Humanoid") or fruit:IsA("Tool") and not table.find(blocklist,fruit.Name) and not fruit.Parent:FindFirstChild("Humanoid") then
+			local currentpart = FindHandle(fruit)
+
+			print(currentpart)
+
+			if currentpart ~= nil then
+				for i=1,3 do
+					plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
 					task.wait(0.15)
-				elseif Handle == nil and plr.Character then
-					local currentpart = nil
-					for _,handlepart in fruit:GetDescendants() do
-						if handlepart:IsA("BasePart") then
-							currentpart = handlepart
-							break
-						end
-					end
-					if currentpart then
-						plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
-						task.wait(0.15)
-					end
 				end
 			end
+
+			print("Fruit found!")
 			task.wait(FarmSpeed)
 		end
 	end
-	RandomFruit()
-	task.wait(0.5)
-	Store()
-	task.wait(5)
-	ServerHop()
+	task.spawn(function()
+		if RandomFruit == true then RandomFruit() end
+		task.wait(0.5)
+		Store()
+		task.wait(1)
+		if ServerHop == true then ServerHop() end
+	end)
 end
 
-warn("Script FruitsFarm Executed!")
 SetTeam()
-plr.CharacterAdded:Connect(Finder)
+task.wait(5)
+Finder()
