@@ -101,9 +101,9 @@ local function Finder()
 			print(currentpart)
 
 			if currentpart ~= nil then
-				for i=1,3 do
-					plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(math.random(0.1,0.2),0,math.random(0.1,0.2))
-					task.wait(0.15)
+				for i=1,15 do
+					plr.Character.HumanoidRootPart.CFrame = currentpart.CFrame*CFrame.new(0,math.random(-0.2,0.2),0)
+					task.wait(0.05)
 				end
 			end
 
