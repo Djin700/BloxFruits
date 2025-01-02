@@ -8,13 +8,6 @@ local ServerHop = true
 local RandomFruit = true
 local Team = 2
 
-if _G.FarmSpeed ~= nil then
- FarmSpeed = _G.FarmSpeed
- ServerHop = _G.ServerHop
- RandomFruit = _G.RandomFruit
- Team = _G.Team
-end
-
 --//ServerHop//--
 local function ServerHop()
 	local success, warning = pcall(function()
@@ -25,7 +18,7 @@ local function ServerHop()
 
 		local _place,_id = game.PlaceId, game.JobId
 		-- Asc for lowest player count, Desc for highest player count
-		local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=10"
+		local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=50"
 
 		local function ListServers(cursor)
 			local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
@@ -133,15 +126,11 @@ local function Finder()
 			task.wait(FarmSpeed)
 		end
 	end
-	if RandomFruit == true then
-		RandomFruit()
-		task.wait(0.5)
-	end
+	RandomFruit()
+	task.wait(0.5)
 	Store()
 	task.wait(5)
-	if ServerHop == true then
-		ServerHop()
-	end
+	ServerHop()
 end
 
 warn("Script FruitsFarm Executed!")
