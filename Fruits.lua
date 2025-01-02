@@ -3,10 +3,17 @@ local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 
 local blockname = {"Banana","Pineapple","Apple"}
-local FarmSpeed = _G.FarmSpeed
-local ServerHop = _G.ServerHop
-local RandomFruit = _G.RandomFruit
-local Team = _G.Team
+local FarmSpeed = 1
+local ServerHop = true
+local RandomFruit = true
+local Team = 2
+
+if _G.FarmSpeed ~= nil then
+	 FarmSpeed = _G.FarmSpeed
+	 ServerHop = _G.ServerHop
+	 RandomFruit = _G.RandomFruit
+	 Team = _G.Team
+end
 
 --//ServerHop//--
 local function ServerHop()
